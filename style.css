@@ -1,0 +1,91 @@
+body {
+    border: solid white;
+    color: white;
+    background-color: black;
+}
+
+.title {
+    border: solid red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font: larger;
+    font-style: oblique;
+    height: 95vh;
+    width: 100%;
+}
+
+.container {
+    border: solid white;
+    background-image: url('./img/Ozp-resize.gif');
+    background-size: auto;
+    height: 200vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+
+}
+
+/* .stars {
+
+    width: 100%;
+    display: flex;
+    justify-items: center;
+} */
+
+.battlemage {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    margin-left: 10px;
+    margin-bottom: 60px;
+    font-style: normal;
+}
+
+#start {
+    width: 60px;
+    display: flex;
+    margin-bottom: -28px;
+    justify-content: center;
+    font-size: larger;
+}
+
+#attack {
+    width: 60px;
+    display: flex;
+    margin-left: 80px;
+    margin-bottom: -28px;
+    justify-content: center;
+    font-size: larger;
+}
+
+#retreat {
+    width: 60px;
+    display: flex;
+    margin-left: 160px;
+    margin-bottom: -20px;
+    font-size: larger;
+    justify-content: center;
+}
+
+#game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    color: white;
+    font-size: 20px;
+}
+
+.explosion {
+    position: absolute;
+    /* Position it absolutely within its parent container */
+    pointer-events: none;
+    /* Ensure it doesn't block other interactions */
+    z-index: 10;
+    /* Keep it above other elements */
+}
