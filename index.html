@@ -13,29 +13,34 @@
 
 <body>
     <div class="title">
-        <h1> Space Battle</h1>
-        <div class="container">
-            <img class="stars"></img>
-        </div>
-        <div class="battlemage">
-            <h1> battlemage uss</h1>
-            <button id="start">start</button>
-            <button id="attack">attack</button>
-            <button id="retreat">retreat</button>
-        </div>
-        <div id="game-over" style="display:none;">
-            <h2>Game Over!</h2>
-            <button id="restart-button">Restart</button>
-        </div>
+        <h1>Space Battle</h1>
         <div id="hud">
-            <p id="player-health">Player Hull: 20</p>
+            <p id="player-hull">Player Hull: 20</p>
+            <p id="score">Score: 0</p>
+            <p id="health">Health: 100</p>
+            <p id="enemy-hull">Enemy Hull: 6</p> <!-- Display enemy hull here -->
         </div>
-
     </div>
 
+    <div class="container">
+        <img class="stars" alt="" />
+    </div>
 
+    <div class="battlemage">
+        <h1>USS Battlemage</h1>
+        <div class="controls">
+            <button id="start" aria-label="Start the game">Start</button>
+            <button id="attack" aria-label="Attack the enemy">Attack</button>
+            <button id="retreat" aria-label="Retreat from battle">Retreat</button>
+        </div>
+    </div>
 
-    <script src="app.js" async defer></script>
+    <div id="game-over" style="display:none;">
+        <h2>Game Over!</h2>
+        <button id="restart-button">Restart</button>
+    </div>
+
+    <script src="app.js" defer></script>
 </body>
 
 </html>

@@ -11,21 +11,32 @@ body {
     align-items: center;
     font: larger;
     font-style: oblique;
-    height: 95vh;
+    height: 150px;
     width: 100%;
+}
+
+#hud {
+    border: solid red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font: larger;
+    font-style: oblique;
+    width: 10%;
+    margin-left: auto;
+    margin-top: -80px;
 }
 
 .container {
     border: solid white;
     background-image: url('./img/Ozp-resize.gif');
     background-size: auto;
-    height: 200vh;
+    height: 750px;
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 5px;
-
 }
+
 
 /* .stars {
 
@@ -37,13 +48,16 @@ body {
 .battlemage {
     display: flex;
     flex-direction: column;
-    justify-content: end;
+    justify-content: center;
+    align-items: center;
     margin-left: 10px;
     margin-bottom: 60px;
     font-style: normal;
 }
 
-#start {
+#start,
+#attack,
+#retreat {
     width: 60px;
     display: flex;
     margin-bottom: -28px;
@@ -52,22 +66,14 @@ body {
 }
 
 #attack {
-    width: 60px;
-    display: flex;
     margin-left: 80px;
-    margin-bottom: -28px;
-    justify-content: center;
-    font-size: larger;
 }
 
 #retreat {
-    width: 60px;
-    display: flex;
     margin-left: 160px;
     margin-bottom: -20px;
-    font-size: larger;
-    justify-content: center;
 }
+
 
 #game-over {
     position: absolute;
@@ -81,11 +87,9 @@ body {
     font-size: 20px;
 }
 
+
 .explosion {
     position: absolute;
-    /* Position it absolutely within its parent container */
     pointer-events: none;
-    /* Ensure it doesn't block other interactions */
     z-index: 10;
-    /* Keep it above other elements */
 }
