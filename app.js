@@ -43,8 +43,9 @@ const GAME_STATE = {
 };
 
 function setPosition(el, x, y) {
-    el.style.transform = `translate(${x}px, ${y}px)`;
+    el.style.transform = `translate(${x}px, ${y}px)`;  // Use backticks (`) to correctly format the string
 }
+
 
 function clamp(v, min, max) {
     if (v <= min) {
@@ -192,7 +193,7 @@ function startGame() {
 
     // Laser creation function (updated to align correctly with ship position)
     function createLaser(container, x, y) {
-        console.log(`Creating laser at x: ${x}, y: ${y}`);  // Log laser position for debugging
+        console.log(`Enemy hit! Enemy hull: ${GAME_STATE.enemy.hull}`);  // Log laser position for debugging
 
         // Calculate the direction vector from player to enemy
         const enemyX = GAME_STATE.enemyX;
@@ -253,7 +254,7 @@ function startGame() {
                     if (GAME_STATE.enemy && GAME_STATE.enemy.hull !== undefined) {
                         GAME_STATE.enemy.hull -= laser.firepower;
                         GAME_STATE.enemy.hull = Math.max(0, GAME_STATE.enemy.hull);  // Ensure hull doesn't go negative
-                        console.log(`Enemy hit! Enemy hull: ${GAME_STATE.enemy.hull}`);
+                        console.log(`Enemy hull: ${GAME_STATE.enemy.hull}`);
                     } else {
                         console.log("Error: Enemy ship hull not found!");
                     }
@@ -421,7 +422,7 @@ function startGame() {
             const currentTime = Date.now();
             const timeSinceLastChange = (currentTime - GAME_STATE.lastDirectionChangeTime) / 1000; // Time in seconds
 
-            // Randomly change the direction of the enemy ship every `directionChangeInterval` seconds
+            // Randomly change the direction of the enemy ship every directionChangeInterval seconds
             if (timeSinceLastChange >= GAME_STATE.directionChangeInterval) {
                 GAME_STATE.enemyDirection = Math.random() < 0.5 ? -1 : 1;  // Random direction (left or right)
                 GAME_STATE.directionChangeInterval = Math.random() * 3 + 1; // Randomize next interval (1-4 seconds)
@@ -449,78 +450,21 @@ function startGame() {
 
     function updateHUD() {
         // Update the player's hull and health
-        document.getElementById('player-hull').textContent = `Player Hull: ${myship.hull}`;
-        document.getElementById('health').textContent = `Health: ${playerHealth}`;
+        document.getElementById('player-hull').textContent = ("Player Hull: " + playerHull);
+        document.getElementById('health').textContent = (`Enemy Hull: ${GAME_STATE.enemy.hull}`);
 
         // Update the score
-        document.getElementById('score').textContent = `Score: ${score}`;
+        document.getElementById('score').textContent = (`Score: ${score}`);
 
         // Update the enemy hull
         if (GAME_STATE.enemy) {
-            document.getElementById('enemy-hull').textContent = `Enemy Hull: ${GAME_STATE.enemy.hull}`;
+            document.getElementById('enemy-hull').textContent = (`Enemy Hull: ${GAME_STATE.enemy.hull}`);
         }
     }
 
 
     // Update function that runs every frame
-    // Initialize variables for score and health
-    let score = 0;  // Player's score
-    let playerHealth = 100;  // Player's health (can be modified during the game)
-    let enemyHealth = 6;  // Initial enemy hull (change this based on enemy ship)
-
-    function updateHUD() {
-        // Update the player's hull and health
-        document.getElementById('player-hull').textContent = `Player Hull: ${myship.hull}`;
-        document.getElementById('health').textContent = `Health: ${playerHealth}`;
-
-        // Update the score
-        document.getElementById('score').textContent = `Score: ${score}`;
-
-        // Update the enemy hull
-        if (GAME_STATE.enemy) {
-            document.getElementById('enemy-hull').textContent = `Enemy Hull: ${GAME_STATE.enemy.hull}`;
-        }
-    }
-
-    function attackF() {
-        const container = document.querySelector(".container");
-
-        // Check if the enemy exists and is still alive
-        if (enemyarr[0] && enemyarr[0].hull > 0) {
-            myship.attack(enemyarr[0]);
-
-            // Update the score after each successful attack
-            score += 10; // Increment score for each successful hit (you can adjust this)
-
-            // If the enemy's hull reaches 0, replace it with a new enemy
-            if (enemyarr[0].hull <= 0) {
-                console.log('Enemy defeated!');
-                enemyarr.pop();  // Remove defeated enemy
-                let newEnemy = new EnemyShip();  // Create a new enemy
-                enemyarr.push(newEnemy);
-                GAME_STATE.enemy = newEnemy;  // Update GAME_STATE.enemy reference
-
-                // Reset enemy laser timer
-                enemyFireTimer = Math.random() * (ENEMY_FIRE_DELAY_MAX - ENEMY_FIRE_DELAY_MIN) + ENEMY_FIRE_DELAY_MIN;
-            }
-
-            // If the enemy is still alive, it attacks the player
-            if (enemyarr[0].hull > 0) {
-                enemyarr[0].attack(myship);
-            }
-        } else {
-            console.log("No valid enemy to attack.");
-        }
-
-        // Update the HUD after the attack
-        updateHUD();
-    }
-
     function update() {
-        if (gameOver) {
-            return;  // Stop the game loop if the game is over
-        }
-
         const currentTime = Date.now();
         const dt = (currentTime - GAME_STATE.lastTime) / 1000; // Time delta for smooth animation
 
@@ -534,26 +478,21 @@ function startGame() {
         enemyFiresLaser(container);
         checkGameOver();
 
-        // Update the HUD each frame
-        updateHUD();
+        // If the enemy's fire timer is greater than 0, reduce it
+        if (enemyFireTimer > 0) {
+            enemyFireTimer -= dt;  // Decrement the timer
+        } else {
+            // Allow the enemy to fire after the cooldown period
+            if (!GAME_STATE.enemyCanFire) {
+                GAME_STATE.enemyCanFire = true;
+            }
+        }
 
-        // Update game state
-        GAME_STATE.lastTime = currentTime;
+        GAME_STATE.lastTime = currentTime;  // Update last time for the next frame
         window.requestAnimationFrame(update);  // Continue the game loop
     }
 
-    // Modify checkGameOver to end the game when player's hull reaches 0
-    function checkGameOver() {
-        if (myship.hull <= 0) {
-            console.log("Game Over! You were destroyed!");
-            // Hide the game area and show the game over screen
-            document.querySelector(".container").style.display = "none";
-            document.getElementById("game-over").style.display = "block";
-            gameOver = true;
-            return true;
-        }
-        return false;
-    }
+
 
     function onKeyDown(e) {
         if (e.keyCode === KEY_CODE_LEFT) {
@@ -601,9 +540,6 @@ function startGame() {
         if (enemyarr[0] && enemyarr[0].hull > 0) {
             myship.attack(enemyarr[0]);
 
-            // Update the score after each successful attack
-            score += 10; // Increment score for each successful hit (you can adjust this)
-
             // If the enemy's hull reaches 0, replace it with a new enemy
             if (enemyarr[0].hull <= 0) {
                 console.log('Enemy defeated!');
@@ -640,7 +576,7 @@ function startGame() {
             document.querySelector(".container").style.display = "none";
             document.getElementById("game-over").style.display = "block";
 
-            // Stop the game loop by not calling `requestAnimationFrame`
+            // Stop the game loop by not calling requestAnimationFrame
             return true;  // Returning true indicates the game is over
         }
         return false;  // If the player is still alive, continue the game loop

@@ -5,18 +5,16 @@ body {
 }
 
 .title {
-    border: solid red;
     display: flex;
     flex-direction: column;
     align-items: center;
     font: larger;
     font-style: oblique;
-    height: 150px;
+    height: 130px;
     width: 100%;
 }
 
 #hud {
-    border: solid red;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -58,7 +56,7 @@ body {
 #start,
 #attack,
 #retreat {
-    width: 60px;
+    width: 70px;
     display: flex;
     margin-bottom: -28px;
     justify-content: center;
