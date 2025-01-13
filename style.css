@@ -15,14 +15,13 @@ body {
 }
 
 #hud {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: block;
     font: larger;
     font-style: oblique;
     width: 10%;
     margin-left: auto;
-    margin-top: -80px;
+    margin-top: -110px;
+    padding-top: 20px;
 }
 
 .container {
